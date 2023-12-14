@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import React, {useState} from "react";
 
 export default function Home(){
 
@@ -14,8 +14,8 @@ export default function Home(){
   // State to hold previously calculated scenarios. An array of obj
   const [allPredicts, setAllPredicts] = useState([]);
 
-  // State to store the grossProfit calculated after it is ran
-  const [grossProfit, setGrossProfit] = useState(0);
+  // State to store all form bodies with their calculations
+  const [allFormBodies, setAllFormBodies] = useState([]);
 
   // Function to handle storing user inputted info in the variables
   const handleInputChange = (e) => {
@@ -50,16 +50,8 @@ export default function Home(){
     let sellAmnt = totalAmnt * percentAmnt;
     // Running total of gross profits
     let grossProfits = 0;
-
-    // Obj for results
-    const results = {
-      totalAmnt: totalAmnt, // Starting total asset amount
-      remainingAmnt: remainingAsset, // Remaining asset amount
-      percentAmnt: percentAmnt, // percent of asset to be sold at each price level
-      startPrice: startPrice, // Starting price level
-      endPrice: endPrice, // Ending price level
-      grossProfit: grossProfit, // Gross profits
-    };
+    // Index variable for the newly added calculations
+    const index = allPredicts.length;
 
     // run loop to calculate total profit
     while(currentPrice <= endPrice){
@@ -75,20 +67,66 @@ export default function Home(){
       // Increment priceChange
       currentPrice += ratePriceChange;
     }
+
     console.log(
-        "Remaining Asset Balance: ",remainingAsset.toFixed(2),
-        "Gross Profits: ", grossProfits.toFixed(2)
+        "Remaining Asset Balance: ",remainingAsset,
+        "Gross Profits: ", grossProfits
     );
 
-    // Update state array to store calculated results
-    setAllPredicts((prevCalc) => [...prevCalc, {
-      totalAmnt: totalAmnt.toFixed(2), // Starting total asset amount
+    // Obj for results
+    const results = {
+      totalAmnt: totalAmnt, // Starting total asset amount
       remainingAmnt: remainingAsset.toFixed(2), // Remaining asset amount
-      percentAmnt: parseFloat(percentAmnt * 100).toFixed(2), // percent of asset to be sold at each price level
+      percentAmnt: percentAmnt.toFixed(2), // percent of asset to be sold at each price level
       startPrice: startPrice.toFixed(2), // Starting price level
       endPrice: endPrice.toFixed(2), // Ending price level
       grossProfit: grossProfits.toFixed(2), // Gross profits
+    };
+
+    // Update state array to store calculated results
+    setAllPredicts((prevCalc) => [...prevCalc, {
+      totalAmnt: totalAmnt, // Starting total asset amount
+      remainingAmnt: remainingAsset, // Remaining asset amount
+      percentAmnt: parseFloat(percentAmnt * 100), // percent of asset to be sold at each price level
+      startPrice: startPrice, // Starting price level
+      endPrice: endPrice, // Ending price level
+      grossProfit: grossProfits, // Gross profits
     }]);
+
+    // Create a new form body with the current calculation
+    const newFormBody = (
+        <div className="formBody" key={index}>
+          <ul>
+            <li>
+              <strong>Starting Asset Balance:</strong>
+              <input type="text" value={`$${results.totalAmnt}`} disabled />
+            </li>
+            <li>
+              <strong>Remaining Asset Balance:</strong>
+              <input type="text" value={`$${results.remainingAmnt}`} disabled />
+            </li>
+            <li>
+              <strong>Percent of asset to be sold:</strong>
+              <input type="text" value={`${results.percentAmnt}%`} disabled />
+            </li>
+            <li>
+              <strong>Starting Sell Price:</strong>
+              <input type="text" value={`$${results.startPrice}`} disabled />
+            </li>
+            <li>
+              <strong>Ending Sell Price:</strong>
+              <input type="text" value={`$${results.endPrice}`} disabled />
+            </li>
+            <li>
+              <strong>Gross Profits:</strong>
+              <input type="text" value={`$${results.grossProfit}`} disabled />
+            </li>
+          </ul>
+        </div>
+    );
+
+    // Update the use state
+    setAllFormBodies((prevFormBodies) => [...prevFormBodies, newFormBody]);
 
     // Reset inputs to placeholder values
     handleResetValues();
@@ -166,27 +204,10 @@ export default function Home(){
         </div>
         <div className="formContainer">
           <div className="spacer"></div>
-          <div className="formBody">
-            {/* Display investment information */}
-            <ul>
-              {allPredicts.map((calculation, index) => {
-                return <li key={index}>
-                  <strong>Starting Asset Balance:</strong>
-                  <input type="text" value={`$${calculation.totalAmnt}`} disabled/>
-                  <strong>Remaining Asset Balance:</strong>
-                  <input type="text" value={`$${calculation.remainingAmnt}`} disabled/>
-                  <strong>Percent of asset to be sold:</strong>
-                  <input type="text" value={`${calculation.percentAmnt}%`} disabled/>
-                  <strong>Starting Sell Price:</strong>
-                  <input type="text" value={`$${calculation.startPrice}`} disabled/>
-                  <strong>Ending Sell Price:</strong>
-                  <input type="text" value={`$${calculation.endPrice}`} disabled/>
-                  <strong>Gross Profits:</strong>
-                  <input type="text" value={`$${calculation.grossProfit}`} disabled/>
-                </li>
-              })}
-            </ul>
-          </div>
+          {/* Display calculated information */}
+          {allFormBodies.map((formBody, index) => (
+              <React.Fragment key={index}>{formBody}</React.Fragment>
+          ))}
           <div className="spacer"></div>
         </div>
       </div>
