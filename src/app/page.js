@@ -92,7 +92,7 @@ export default function Home(){
 
     // Create a new form body with the current calculation
     const newFormBody = (
-        <div className="formBody" key={index}>
+        <div className="profitOutputBody" key={index}>
           <ul>
             <li>
               <strong>Starting Asset Balance:</strong>
@@ -165,35 +165,41 @@ export default function Home(){
         <div className="formContainer">
           <div className="spacer"></div>
           <div className="formBody"> {/* Start of form */}
+            <h1>Gross Profit Calculator</h1>
             <div className="inputForm">
               {/* Total amount to be sold */}
               <input  type="text"
                       id="totalAmnt"
                       placeholder="Total Asset Amount"
+                      autoComplete="off"
                       onChange={handleInputChange}
               />
               {/* The % of the total amount to be sold */}
               <input  type="text"
                       id="percentAmnt"
                       placeholder="Percent of asset to be sold"
+                      autoComplete="off"
                       onChange={handleInputChange}
               />
               {/* Price increment. Rate at which price will change */}
               <input type="text"
                      id="priceChange"
                      placeholder="Price increment"
+                     autoComplete="off"
                      onChange={handleInputChange}
               />
               {/* starting price to be sold at */}
               <input  type="text"
                       id="startPrice"
                       placeholder="Starting sell price"
+                      autoComplete="off"
                       onChange={handleInputChange}
               />
               {/* ending price prediction */}
               <input  type="text"
                       id="endPrice"
                       placeholder="Ending sell price"
+                      autoComplete="off"
                       onChange={handleInputChange}
               />
               <button type="submit" onClick={handleSubmit}>
