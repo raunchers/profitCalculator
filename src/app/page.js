@@ -68,16 +68,12 @@ export default function Home(){
       currentPrice += ratePriceChange;
     }
 
-    console.log(
-        "Remaining Asset Balance: ",remainingAsset,
-        "Gross Profits: ", grossProfits
-    );
-
     // Obj for results
     const results = {
       totalAmnt: totalAmnt, // Starting total asset amount
       remainingAmnt: remainingAsset.toFixed(2), // Remaining asset amount
-      percentAmnt: percentAmnt.toFixed(2), // percent of asset to be sold at each price level
+      percentAmnt: (percentAmnt * 100).toFixed(2), // percent of asset to be sold at each price level
+      ratePriceChange: ratePriceChange.toFixed(2),
       startPrice: startPrice.toFixed(2), // Starting price level
       endPrice: endPrice.toFixed(2), // Ending price level
       grossProfit: grossProfits.toFixed(2), // Gross profits
@@ -87,7 +83,8 @@ export default function Home(){
     setAllPredicts((prevCalc) => [...prevCalc, {
       totalAmnt: totalAmnt, // Starting total asset amount
       remainingAmnt: remainingAsset, // Remaining asset amount
-      percentAmnt: parseFloat(percentAmnt * 100), // percent of asset to be sold at each price level
+      percentAmnt: percentAmnt, // percent of asset to be sold at each price level
+      ratePriceChange: ratePriceChange.toFixed(2),
       startPrice: startPrice, // Starting price level
       endPrice: endPrice, // Ending price level
       grossProfit: grossProfits, // Gross profits
@@ -103,11 +100,15 @@ export default function Home(){
             </li>
             <li>
               <strong>Remaining Asset Balance:</strong>
-              <input type="text" value={`$${results.remainingAmnt}`} disabled />
+              <input type="text" value={`${results.remainingAmnt}`} disabled />
             </li>
             <li>
               <strong>Percent of asset to be sold:</strong>
               <input type="text" value={`${results.percentAmnt}%`} disabled />
+            </li>
+            <li>
+              <strong>Price Increment:</strong>
+              <input type="text" value={`$${results.ratePriceChange}`} disabled />
             </li>
             <li>
               <strong>Starting Sell Price:</strong>
@@ -203,12 +204,12 @@ export default function Home(){
           <div className="spacer"></div>
         </div>
         <div className="formContainer">
-          <div className="spacer"></div>
           {/* Display calculated information */}
-          {allFormBodies.map((formBody, index) => (
-              <React.Fragment key={index}>{formBody}</React.Fragment>
-          ))}
-          <div className="spacer"></div>
+          <div className="formBodiesContainer">
+            {allFormBodies.map((formBody, index) => (
+                <React.Fragment key={index}>{formBody}</React.Fragment>
+            ))}
+          </div>
         </div>
       </div>
   );
