@@ -193,8 +193,45 @@ input{
   background-color: #46343F;
 }
 
+.spreadsheet{
+  padding: 10px;
+}
+
+.container{
+  display: flex;
+}
+
+table{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td{
+  border: 1px solid #59C9A5;
+  padding: 8px;
+  text-align: left;
+}
+
 .navigBar a:active{
   background-color: darkgrey;
+}
+
+thead{
+  background-color: #3B2C35;
+  color: #59C9A5;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #2A1F2D;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #46343F;
+}
+
+/* Add styles for hovered rows */
+tbody tr:hover {
+  background-color: #52796F;
 }
 
 .navigBar a:hover{
